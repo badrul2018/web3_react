@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 import Web3 from 'web3';
 let web3= new Web3(window.web3.currentProvider)
 function App() {
@@ -29,6 +29,8 @@ function App() {
   //   });
 
   // }
+
+  /*
   if (window.ethereum) {
     web3 = new Web3(window.ethereum);
     try { 
@@ -49,12 +51,32 @@ function App() {
  else {
      alert('You have to install MetaMask !');
  }
+ */
+
+ // logic for check the eth account
+ const [id,setId]=useState([])
+const  isLocked=()=> {
+  web3.eth.getAccounts(function(err, accounts){
+     if (err != null) {
+        console.log(err)
+     }
+     else if (accounts.length === 0) {
+        console.log('MetaMask is locked')
+        
+     }
+     else {
+        console.log('MetaMask is unlocked')
+        setId(accounts)
+     }
+  });
+}
 
 
   return (
     <div className="App">
       
-      <button >check MetaMask</button>
+      <button onClick={isLocked} >check MetaMask</button>
+      { id.map((id,index)=><h1 key={index}>{id}</h1>) }
     </div>
   );
 }
